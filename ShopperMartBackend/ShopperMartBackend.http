@@ -1,0 +1,6 @@
+@ShopperMartBackend_HostAddress = http://localhost:5263
+
+GET {{ShopperMartBackend_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
