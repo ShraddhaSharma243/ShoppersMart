@@ -1,0 +1,22 @@
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Imported</th>
+            <th>Price</th>
+            <th>Add to Cart</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let product of products">
+            <td>{{ product.name }}</td>
+            <td>{{ product.category }}</td>
+            <td>{{ product.isImported }} </td>
+            <td>{{ product.price }}</td>
+            <td>
+                <button (click)="addToCart(product)" [disabled]= "product.isAddedToTheCart">Add to Cart</button>
+            </td>
+        </tr>
+    </tbody>
+</table>

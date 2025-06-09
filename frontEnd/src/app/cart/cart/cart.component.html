@@ -1,0 +1,35 @@
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Imported</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+            <th>Remove Item</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let cartItem of cartItems">
+            <td>{{ cartItem.name }}</td>
+            <td>{{ cartItem.category }}</td>
+            <td>{{ cartItem.isImported }} </td>
+            <td>{{ cartItem.price }}</td>
+            <td>
+                <input type="number" [(ngModel)]="cartItem.quantityOrdered" [max]="cartItem.quantityInStock" [min]="1"
+                    (ngModelChange)="onQuantityOrderedChange(cartItem)">
+            </td>
+            <td>{{ cartItem.subTotal}}</td>
+            <td>
+                <button (click)="removeItemFromCart(cartItem)">Remove</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div>
+    {{total}}
+</div>
+<div>
+    <button (click)="requestReceipt()">Submit</button>
+</div>
