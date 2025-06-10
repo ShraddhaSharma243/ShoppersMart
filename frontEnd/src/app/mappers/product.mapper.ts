@@ -9,8 +9,8 @@ export function mapToProductDto(products: any[], cartService: CartService): Prod
         isImported: product.isImported ? 'Yes' : 'No',
         price: product.price,
         quantityInStock: product.quantity,
-        quantityOrdered:1,
-        subTotal:0,
+        quantityOrdered: 1,
+        subTotal: product.price,
         isAddedToTheCart: cartService.getCartItems().some(item => item.id === product.id)
     }))
 }

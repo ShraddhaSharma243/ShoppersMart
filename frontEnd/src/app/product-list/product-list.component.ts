@@ -24,7 +24,6 @@ export class ProductListComponent implements OnInit {
   public fetchProducts() {
     this.productService.getProducts().subscribe(
       (resp: any) => {
-        console.log(resp);
         this.products = mapToProductDto(resp.products, this.cartService);
       },
       (error) => {
@@ -34,9 +33,6 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: ProductDto) {
-    console.log(`before adding is added to cart.`);
-    product.isAddedToTheCart = true;
-    product.subTotal = product.price * product.quantityOrdered;
     this.cartService.addToCart(product);
   }
 }
