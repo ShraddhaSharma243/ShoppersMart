@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\shradsharma\\OneDrive - ALLEGIS GROUP\\Documents\\.net core\\ShopperMartBackend\\ShopperMartBackend.csproj": {}
+    "C:\\Users\\shradsharma\\Documents\\ShoppersMart\\ShoppersMart\\ShopperMartBackend\\ShopperMartBackend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\shradsharma\\OneDrive - ALLEGIS GROUP\\Documents\\.net core\\ShopperMartBackend\\ShopperMartBackend.csproj": {
+    "C:\\Users\\shradsharma\\Documents\\ShoppersMart\\ShoppersMart\\ShopperMartBackend\\ShopperMartBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\shradsharma\\OneDrive - ALLEGIS GROUP\\Documents\\.net core\\ShopperMartBackend\\ShopperMartBackend.csproj",
+        "projectUniqueName": "C:\\Users\\shradsharma\\Documents\\ShoppersMart\\ShoppersMart\\ShopperMartBackend\\ShopperMartBackend.csproj",
         "projectName": "ShopperMartBackend",
-        "projectPath": "C:\\Users\\shradsharma\\OneDrive - ALLEGIS GROUP\\Documents\\.net core\\ShopperMartBackend\\ShopperMartBackend.csproj",
+        "projectPath": "C:\\Users\\shradsharma\\Documents\\ShoppersMart\\ShoppersMart\\ShopperMartBackend\\ShopperMartBackend.csproj",
         "packagesPath": "C:\\Users\\shradsharma\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\shradsharma\\OneDrive - ALLEGIS GROUP\\Documents\\.net core\\ShopperMartBackend\\obj\\",
+        "outputPath": "C:\\Users\\shradsharma\\Documents\\ShoppersMart\\ShoppersMart\\ShopperMartBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\shradsharma\\AppData\\Roaming\\NuGet\\NuGet.Config",

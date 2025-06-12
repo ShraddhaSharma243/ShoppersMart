@@ -8,4 +8,5 @@ export interface ProductDto{
     quantityOrdered: number;
     subTotal: number;
     isAddedToTheCart: boolean;
+    isProductInStock: boolean;
 }

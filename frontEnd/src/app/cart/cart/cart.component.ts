@@ -15,6 +15,7 @@ export class CartComponent implements OnInit {
 
   cartItems: ProductDto[] = [];
   total: number = 0;
+  isCartEmpty = true;
 
   constructor(private receiptService: ReceiptService,
     private cartService: CartService) { }
@@ -26,6 +27,7 @@ export class CartComponent implements OnInit {
   private loadCart() {
     this.cartItems = this.cartService.getCartItems();
     this.total = this.cartService.getTotal();
+    this.isCartEmpty = this.cartService.getCartItems().length == 0 ? true : false;
   }
 
   onQuantityOrderedChange(cartItem: ProductDto) {
@@ -34,7 +36,12 @@ export class CartComponent implements OnInit {
   }
 
   requestReceipt(): void {
-    this.receiptService.requestReceipt(this.cartItems);
+    this.receiptService.requestReceipt(this.cartItems).subscribe({
+      next: response => console.log("receipt submitted", response),
+      error: err => console.error("Error submitting receipt", err)
+    });
+    this.cartService.emptyCart();
+    this.loadCart();
   }
 
   removeItemFromCart(cartItem: ProductDto) {

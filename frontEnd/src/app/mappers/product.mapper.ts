@@ -11,6 +11,7 @@ export function mapToProductDto(products: any[], cartService: CartService): Prod
         quantityInStock: product.quantity,
         quantityOrdered: 1,
         subTotal: product.price,
-        isAddedToTheCart: cartService.getCartItems().some(item => item.id === product.id)
+        isAddedToTheCart: cartService.getCartItems().some(item => item.id === product.id),
+        isProductInStock: product.quantityInStock > 0 ? true : false
     }))
 }

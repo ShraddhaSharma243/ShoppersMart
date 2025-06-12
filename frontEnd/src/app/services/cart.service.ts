@@ -5,6 +5,9 @@ import { ProductDto } from '../dtos/product.dto';
   providedIn: 'root'
 })
 export class CartService {
+  emptyCart() {
+    localStorage.clear();
+  }
 
   addToCart(product: ProductDto): void {
     product.isAddedToTheCart = true;
@@ -32,7 +35,7 @@ export class CartService {
     const productId = cartItem.id;
     const existingItem = localStorage.getItem(productId);
     if (existingItem) {
-      cartItem.subTotal = cartItem.quantityOrdered * cartItem.price;
+      cartItem.subTotal = Math.round(cartItem.quantityOrdered * cartItem.price * 100) / 100;
       localStorage.setItem(productId, JSON.stringify(cartItem));
     }
   }

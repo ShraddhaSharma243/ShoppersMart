@@ -15,7 +15,7 @@
             <td>{{ product.isImported }} </td>
             <td>{{ product.price }}</td>
             <td>
-                <button (click)="addToCart(product)" [disabled]= "product.isAddedToTheCart">Add to Cart</button>
+                <button (click)="addToCart(product)" [disabled]= "product.isAddedToTheCart || !product.isProductInStock">Add to Cart</button>
             </td>
         </tr>
     </tbody>

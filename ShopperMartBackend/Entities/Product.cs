@@ -9,6 +9,6 @@ namespace ShopperMartBackend.Entities
         public required ProductCategory Category { get; set; }
         public bool IsImported { get; set; }
         public decimal Price { get; set; }
-        public int Quantity { get; set; }
+        public int QuantityInStock { get; set; }
     }
 }

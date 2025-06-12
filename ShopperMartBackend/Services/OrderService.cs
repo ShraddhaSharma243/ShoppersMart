@@ -15,69 +15,103 @@ namespace ShopperMartBackend.Services
 
         public async Task<OrderResponse> ProcessOrderAsync(OrderRequest request)
         {
-            if (request.OrderItemRequests == null || request.OrderItemRequests.Count == 0)
+            ValidateOrderRequest(request);
+
+            var orderedProducts = await LoadOrderedProdutsAsync(request);
+
+            ValidateProductStock(request, orderedProducts);
+
+            Order order = CreateOrder(request, orderedProducts);
+
+            await SaveOrderAsync(order);
+
+            await UpdateStock(request);
+
+            return CreateResponse(order);
+
+        }
+
+        private async Task UpdateStock(OrderRequest request)
+        {
+            var orderItemRequests = request.OrderItemRequests;
+            if (orderItemRequests == null)
             {
-                throw new InvalidOrderException("Product requests list can not be empty");
+                throw new ArgumentNullException(nameof(orderItemRequests));
             }
-           
-            await Task.WhenAll(request.OrderItemRequests.Select(async orderItem =>
+           foreach(var orderItemRequest in orderItemRequests)
             {
-                var productId = orderItem.ProductId;
-                var product = await _dbContext.Products.FindAsync(productId) ?? throw new ProductNotFoundException($"Product with ID {productId} not Found");
-            }));
+                UpdateProductStockQuantity(orderItemRequest);
+            }
+            await _dbContext.SaveChangesAsync();
+        }
 
-            await Task.WhenAll(request.OrderItemRequests.Select(async orderItem =>
-            {
-                var productId = orderItem.ProductId;
-                var product = await _dbContext.Products.FindAsync(productId);
-                var quantityInStock = product?.Quantity;
-                var quantityRequested = orderItem.Quantity;
-                if (quantityInStock < quantityRequested)
-                {
-                    throw new InvalidOrderException($"Not sufficient stock for {productId}");
-                }
-            }));
+        private void UpdateProductStockQuantity(OrderItemRequest orderItemRequest)
+        {
+            var productId = orderItemRequest.ProductId;
+            var product = _dbContext.Products.Find(productId);
+            product.QuantityInStock = product.QuantityInStock - orderItemRequest.Quantity;
+            _dbContext.Products.Update(product);
+        }
 
+        private async Task SaveOrderAsync(Order order)
+        {
+            _dbContext.Orders.Add(order);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private Order CreateOrder(OrderRequest request, Dictionary<Guid, Product> orderedProducts)
+        {
             var order = new Order
             {
-                Id = new Guid(),
-                OrderDate = DateTime.Now,
+                Id = Guid.NewGuid(),
+                OrderDate = DateTime.UtcNow,
+                Items = new List<OrderItem>(),
+                Total = 0
             };
-            await Task.WhenAll(request.OrderItemRequests.Select(async orderItem =>
+
+            foreach (var orderItem in request.OrderItemRequests)
             {
-                var product = await _dbContext.Products.FindAsync(orderItem.ProductId);
-                var quantityRequested = orderItem.Quantity;
-                var tax = _taxService.CalculateTax(product, quantityRequested);
-                var newOrderItem = CreateOrderItem(product, quantityRequested, tax, order);
+                var product = orderedProducts[orderItem.ProductId];
+                var tax = _taxService.CalculateTax(product, orderItem.Quantity);
+                var newOrderItem = CreateOrderItem(product, orderItem.Quantity, tax, order);
                 order.Items.Add(newOrderItem);
                 order.Total += newOrderItem.SubTotal;
-            }));
+            }
 
-            /*foreach (var orderItem in request.OrderItemRequests)
+            return order;
+        }
+
+        private static void ValidateProductStock(OrderRequest request, Dictionary<Guid, Product> products)
+        {
+            foreach (var orderItem in request.OrderItemRequests)
             {
-                var productId = orderItem.ProductId;
-                var product = await _dbContext.Products.FindAsync(productId);
-                if (product == null)
+                if (!products.TryGetValue(orderItem.ProductId, out var product))
                 {
-                    throw new Exception($"Product with ID {productId} not Found");
+                    throw new ProductNotFoundException($"Product with ID {orderItem.ProductId} not found");
                 }
 
-                var quantity = orderItem.Quantity;
-                if (product.Quantity < quantity)
+                if (product.QuantityInStock < orderItem.Quantity)
                 {
-                    throw new Exception($"Insufficient stock for Product {productId}");
+                    throw new InvalidOrderException($"Not sufficient stock for product ID {orderItem.ProductId}");
                 }
-                var tax = _taxService.CalculateTax(product, quantity);
-                var newOrderItem = CreateOrderItem(product, quantity, tax, order);
-                order.Items.Add(newOrderItem);
-                order.Total += newOrderItem.SubTotal;              
-            }*/
+            }
+        }
 
-            _dbContext.Orders.Add(order);
-            _dbContext.SaveChanges();
+        private async Task<Dictionary<Guid, Product>> LoadOrderedProdutsAsync(OrderRequest request)
+        {
+            var orderedProductsIds = request.OrderItemRequests.Select(orderItem => orderItem.ProductId).Distinct().ToList();
+            var orderedProducts = await _dbContext.Products
+                        .Where(p => orderedProductsIds.Contains(p.Id))
+                        .ToDictionaryAsync(p => p.Id);
+            return orderedProducts;
+        }
 
-            var response = CreateResponse(order);
-            return response;
+        private static void ValidateOrderRequest(OrderRequest request)
+        {
+            if (request.OrderItemRequests == null || request.OrderItemRequests.Count == 0)
+            {
+                throw new InvalidOrderException("Product requests list cannot be empty");
+            }
         }
 
         private static OrderItem CreateOrderItem(Product product, int quantity, decimal tax, Order order)

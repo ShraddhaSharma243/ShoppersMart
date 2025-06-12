@@ -20,7 +20,7 @@ namespace ShopperMartBackend.Data
                     Category = ProductCategory.Entertainment,
                     IsImported  = false,
                     Price = 14.99m,
-                    Quantity = 10,
+                    QuantityInStock = 10,
                 },
                 new Product
                 {
@@ -29,7 +29,7 @@ namespace ShopperMartBackend.Data
                     Category = ProductCategory.Food,
                     IsImported  = false,
                     Price = 0.85m,
-                    Quantity = 10,
+                    QuantityInStock = 10,
                 },
                 new Product
                 {
@@ -38,7 +38,7 @@ namespace ShopperMartBackend.Data
                     Category = ProductCategory.Food,
                     IsImported  = true,
                     Price = 10.00m,
-                    Quantity = 10,
+                    QuantityInStock = 10,
                 },
                 new Product
                 {
@@ -47,7 +47,7 @@ namespace ShopperMartBackend.Data
                     Category = ProductCategory.Misc,
                     IsImported  = true,
                     Price = 47.50m,
-                    Quantity = 10,
+                    QuantityInStock = 10,
                 }
 
             };

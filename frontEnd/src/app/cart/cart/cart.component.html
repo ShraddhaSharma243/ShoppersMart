@@ -17,8 +17,12 @@
             <td>{{ cartItem.isImported }} </td>
             <td>{{ cartItem.price }}</td>
             <td>
-                <input type="number" [(ngModel)]="cartItem.quantityOrdered" [max]="cartItem.quantityInStock" [min]="1"
-                    (ngModelChange)="onQuantityOrderedChange(cartItem)">
+                <select [(ngModel)]="cartItem.quantityOrdered" (ngModelChange)="onQuantityOrderedChange(cartItem)">
+                    <option *ngFor="let qty of [].constructor(cartItem.quantityInStock) let i = index" [value]="i + 1">
+                        {{ i + 1 }}
+                    </option>
+                </select>
+
             </td>
             <td>{{ cartItem.subTotal}}</td>
             <td>
@@ -31,5 +35,5 @@
     Total : {{total}}
 </div>
 <div>
-    <button (click)="requestReceipt()">Submit</button>
+    <button (click)="requestReceipt()" [disabled]="isCartEmpty">Submit</button>
 </div>

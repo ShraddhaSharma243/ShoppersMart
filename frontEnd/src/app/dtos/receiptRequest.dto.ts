@@ -1,4 +1,4 @@
 export interface ReceiptRequestDto{
-    id : string;
-    quantityOrdered: number;
+    productId : string;
+    quantity: number;
 }

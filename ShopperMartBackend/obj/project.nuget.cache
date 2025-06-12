@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1NeyXay6FPHaynfkTPINI1uw4is3CMxOij2fyZVWoVV4xwAW+PhMfpMQhMWu/7cCk780AYFpQmTMTWlU128Kog==",
+  "dgSpecHash": "Lu71m6lAIkhtDT7uxlbk1AcYBlNlEMWjTVv5BmW4/eHNHUAb4TeFX4SHZ9axmDc/EAc0NLDftmX3YQHmWAJo6A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\shradsharma\\OneDrive - ALLEGIS GROUP\\Documents\\.net core\\ShopperMartBackend\\ShopperMartBackend.csproj",
+  "projectFilePath": "C:\\Users\\shradsharma\\Documents\\ShoppersMart\\ShoppersMart\\ShopperMartBackend\\ShopperMartBackend.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\shradsharma\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\shradsharma\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",

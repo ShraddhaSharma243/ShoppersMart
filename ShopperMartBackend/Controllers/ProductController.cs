@@ -27,7 +27,7 @@ namespace ShopperMartBackend.Controllers
                     Category = product.Category.ToString(),
                     IsImported = product.IsImported,
                     Price = product.Price,
-                    Quantity = product.Quantity
+                    QuantityInStock = product.QuantityInStock
                 }).ToListAsync());
 
             return Ok(response);
