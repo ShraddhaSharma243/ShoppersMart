@@ -5,43 +5,70 @@ import { ProductDto } from '../dtos/product.dto';
   providedIn: 'root'
 })
 export class CartService {
+  private cartStorageKey = 'cart'
+  cart: ProductDto[] = [];
 
-  addToCart(product: ProductDto): void {
-    product.isAddedToTheCart = true;
-    localStorage.setItem(product.id, JSON.stringify(product));
+  constructor() {
+    const storedCart = localStorage.getItem(this.cartStorageKey);
+    this.cart = storedCart ? JSON.parse(storedCart) : [];
   }
 
-  getCartItems(): ProductDto[] {
-    let cartItems: ProductDto[] = [];
-    try {
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key != null) {
-          let cartItem: ProductDto = JSON.parse(localStorage.getItem(key)!);
-          cartItems.push(cartItem);
-        }
+  get Cart(): ProductDto[] {
+    return this.cart;
+  }
+
+  get Total(): number {
+    return this.cart.reduce(
+      (total, item) => total + item.subTotal,
+      0);
+  }
+
+  addToCart(product: ProductDto) {
+    this.cart.push(
+      {
+        ...product,
+        quantityOrdered: 1,
+        quantityInStock: --product.quantityInStock
+      });
+
+    this.saveCart();
+  }
+
+  removeFromCart(productId: string) {
+    this.cart = this.cart.filter(p => p.id !== productId);
+    this.saveCart();
+  }
+
+  changeQuantity(productId: string, delta: number) {
+    const item = this.cart.find(p => p.id === productId);
+
+    if (item) {
+      if (item.quantityInStock === 0 && delta > 0) {
+        alert('Not enough in stock');
+        return;
       }
-    } catch (error) {
-      console.error("Error fetching local storage");
-      throw new Error("Error fetching local storage");
+
+      item.quantityOrdered += delta;
+      item.quantityInStock -= delta;
+
+      if (item.quantityOrdered <= 0) {
+        this.removeFromCart(productId);
+      }
+
+      item.subTotal = item.quantityOrdered * item.price;
     }
-    return cartItems;
+
+    this.saveCart();
   }
 
-  updateCart(cartItem: ProductDto) {
-    const productId = cartItem.id;
-    const existingItem = localStorage.getItem(productId);
-    if (existingItem) {
-      cartItem.subTotal = cartItem.quantityOrdered * cartItem.price;
-      localStorage.setItem(productId, JSON.stringify(cartItem));
+  private preventOverOrdering(product: ProductDto, quantityOrdered: number) {
+    if (product.quantityInStock === 0 && quantityOrdered > 0) {
+      alert('Not enough in stock');
+      return;
     }
   }
 
-  removeItemFromCart(cartItem: ProductDto) {
-    localStorage.removeItem(cartItem.id);
-  }
-
-  getTotal(): number {
-    return this.getCartItems().reduce((total, item) => total + item.subTotal, 0);
+  private saveCart() {
+    localStorage.setItem(this.cartStorageKey, JSON.stringify(this.cart));
   }
 }

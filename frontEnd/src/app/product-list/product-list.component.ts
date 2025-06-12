@@ -24,7 +24,7 @@ export class ProductListComponent implements OnInit {
   public fetchProducts() {
     this.productService.getProducts().subscribe(
       (resp: any) => {
-        this.products = mapToProductDto(resp.products, this.cartService);
+        this.products = mapToProductDto(resp.products, this.cartService.Cart);
       },
       (error) => {
         console.error('Error fetching products', error);
@@ -33,6 +33,7 @@ export class ProductListComponent implements OnInit {
   }
 
   addToCart(product: ProductDto) {
+    product.isAddedToTheCart = true;
     this.cartService.addToCart(product);
   }
 }

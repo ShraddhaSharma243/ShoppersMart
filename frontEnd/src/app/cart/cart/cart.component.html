@@ -1,35 +1,38 @@
 <table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Category</th>
-            <th>Imported</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Subtotal</th>
-            <th>Remove Item</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let cartItem of cartItems">
-            <td>{{ cartItem.name }}</td>
-            <td>{{ cartItem.category }}</td>
-            <td>{{ cartItem.isImported }} </td>
-            <td>{{ cartItem.price }}</td>
-            <td>
-                <input type="number" [(ngModel)]="cartItem.quantityOrdered" [max]="cartItem.quantityInStock" [min]="1"
-                    (ngModelChange)="onQuantityOrderedChange(cartItem)">
-            </td>
-            <td>{{ cartItem.subTotal}}</td>
-            <td>
-                <button (click)="removeItemFromCart(cartItem)">Remove</button>
-            </td>
-        </tr>
-    </tbody>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Category</th>
+    <th>Imported</th>
+    <th>Price</th>
+    <th>Quantity</th>
+    <th>Subtotal</th>
+    <th>Remove Item</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of cart">
+    <td>{{ item.name }}</td>
+    <td>{{ item.category }}</td>
+    <td>{{ item.isImported }}</td>
+    <td>{{ item.price }}</td>
+    <td>
+      <button (click)="changeQuantity(item.id, -1)">-</button>
+      <button (click)="changeQuantity(item.id, 1)">+</button>
+    </td>
+    <td>
+      <p>${{ item.price }} x {{ item.quantityOrdered }}</p>
+      {{ item.subTotal }}
+    </td>
+    <td>
+      <button (click)="remove(item.id)">Remove</button>
+    </td>
+  </tr>
+  </tbody>
 </table>
 <div>
-    Total : {{total}}
+  Total : {{ total }}
 </div>
 <div>
-    <button (click)="requestReceipt()">Submit</button>
+  <button (click)="requestReceipt()">Submit</button>
 </div>

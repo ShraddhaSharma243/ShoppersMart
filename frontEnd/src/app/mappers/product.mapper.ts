@@ -1,7 +1,7 @@
 import { ProductDto } from "../dtos/product.dto";
 import { CartService } from "../services/cart.service";
 
-export function mapToProductDto(products: any[], cartService: CartService): ProductDto[] {
+export function mapToProductDto(products: any[], cart: ProductDto[]): ProductDto[] {
     return products.map(product => ({
         id: product.id,
         name: product.name,
@@ -11,6 +11,6 @@ export function mapToProductDto(products: any[], cartService: CartService): Prod
         quantityInStock: product.quantity,
         quantityOrdered: 1,
         subTotal: product.price,
-        isAddedToTheCart: cartService.getCartItems().some(item => item.id === product.id)
+        isAddedToTheCart: cart.some(item => item.id === product.id)
     }))
 }

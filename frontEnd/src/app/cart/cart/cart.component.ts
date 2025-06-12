@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ProductDto } from '../../dtos/product.dto';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -11,34 +11,33 @@ import { CartService } from '../../services/cart.service';
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })
-export class CartComponent implements OnInit {
-
-  cartItems: ProductDto[] = [];
+export class CartComponent {
+  cart: ProductDto[] = [];
   total: number = 0;
 
-  constructor(private receiptService: ReceiptService,
-    private cartService: CartService) { }
-
-  ngOnInit(): void {
+  constructor(
+    private receiptService: ReceiptService,
+    private cartService: CartService
+  ) {
     this.loadCart();
   }
 
-  private loadCart() {
-    this.cartItems = this.cartService.getCartItems();
-    this.total = this.cartService.getTotal();
-  }
-
-  onQuantityOrderedChange(cartItem: ProductDto) {
-    this.cartService.updateCart(cartItem);
+  changeQuantity(productId: string, delta: number) {
+    this.cartService.changeQuantity(productId, delta);
     this.loadCart();
   }
 
   requestReceipt(): void {
-    this.receiptService.requestReceipt(this.cartItems);
+    this.receiptService.requestReceipt(this.cart);
   }
 
-  removeItemFromCart(cartItem: ProductDto) {
-    this.cartService.removeItemFromCart(cartItem);
+  remove(productId: string) {
+    this.cartService.removeFromCart(productId);
     this.loadCart();
+  }
+
+  private loadCart() {
+    this.cart = this.cartService.Cart;
+    this.total = this.cartService.Total;
   }
 }
