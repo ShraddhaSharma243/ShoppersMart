@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ProductListDataService as ProductService } from '../services/product-list-data.service';
+import { ProductListDataService as ProductService } from '../../services/product-list-data.service';
 import { FormsModule } from '@angular/forms';
-import { mapToProductDto } from '../mappers/product.mapper';
-import { ProductDto } from '../dtos/product.dto';
-import { CartService } from '../services/cart.service';
+import { mapToProductDto } from '../../mappers/product.mapper';
+import { ProductDto } from '../../dtos/product.dto';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-product-list',
