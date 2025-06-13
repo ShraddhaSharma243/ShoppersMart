@@ -45,6 +45,6 @@ export class CartService {
   }
 
   getTotal(): number {
-    return this.getCartItems().reduce((total, item) => total + item.subTotal, 0);
+    return Math.round(this.getCartItems().reduce((total, item) => total + item.subTotal, 0) *100)/100;
   }
 }

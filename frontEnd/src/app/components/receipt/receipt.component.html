@@ -1,1 +1,33 @@
-<p>receipt works!</p>
+<div class="receipt-container">
+    <div class="receipt-header"> Receipt</div>
+    <div class="receipt-body-header">
+        <div>Order id : {{ receiptData.id }}</div>
+        <div>Order Date : {{ receiptData.orderDate }}</div>
+        <div>Itemized detail :</div>
+    </div>
+    <table class="receipt-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>IsImported</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Tax</th>
+                <th>Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let orderItem of receiptData.orderItems">
+                <td>{{ orderItem.name }}</td>
+                <td>{{ orderItem.category }}</td>
+                <td>{{ orderItem.isImported }} </td>
+                <td>{{ orderItem.price }}</td>
+                <td>{{ orderItem.quantity }}</td>
+                <td>{{ orderItem.tax }}</td>
+                <td>{{ orderItem.subTotal }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="receipt-total">Total : {{receiptData.total}}</div>
+</div>

@@ -8,10 +8,11 @@ export function mapToProductDto(products: any[], cartService: CartService): Prod
         category: product.category,
         isImported: product.isImported ? 'Yes' : 'No',
         price: product.price,
-        quantityInStock: product.quantity,
+        quantityInStock: product.quantityInStock,
         quantityOrdered: 1,
         subTotal: product.price,
         isAddedToTheCart: cartService.getCartItems().some(item => item.id === product.id),
-        isProductInStock: product.quantityInStock > 0 ? true : false
+        isProductInStock: product.quantityInStock > 0 ? true : false,
+        addToCartBttnText: product.quantityInStock > 0 ? "Add to Cart" : "Out of stock"
     }))
 }

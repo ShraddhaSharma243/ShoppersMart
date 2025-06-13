@@ -9,4 +9,5 @@ export interface ProductDto{
     subTotal: number;
     isAddedToTheCart: boolean;
     isProductInStock: boolean;
+    addToCartBttnText: string;
 }

@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { OrderService as OrderService } from '../../services/order.service';
 import { CartService } from '../../services/cart.service';
-import { Route, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -39,11 +39,15 @@ export class CartComponent implements OnInit {
 
   submitOrder(): void {
     this.orderService.submitOrder(this.cartItems).subscribe({
-      next: response => console.log("order receipt", response),
+      next: (response: any) => {
+        this.cartService.emptyCart(),
+      this.router.navigate(['/receipt'], { 
+        state: { data: response } 
+      });
+    },
       error: err => console.error("Error submitting order", err)
     });
-    this.cartService.emptyCart();
-    this.router.navigate(['/receipt']);
+
   }
 
   removeItemFromCart(cartItem: ProductDto) {

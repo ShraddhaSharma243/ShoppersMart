@@ -1,0 +1,79 @@
+.receipt-header {
+    margin-top: 20px;
+     margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    background-color: darkcyan;
+    color: white;
+}
+
+.receipt-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: darkcyan;
+}
+
+.receipt-body-header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+    color: darkcyan;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.receipt-body-header div {
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.receipt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.receipt-table th,
+.receipt-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.receipt-table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.receipt-table tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.receipt-table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+.receipt-total {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: right;
+    background-color: darkcyan;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .receipt-container {
+        padding: 15px;
+    }
+
+    .receipt-table th,
+    .receipt-table td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}
