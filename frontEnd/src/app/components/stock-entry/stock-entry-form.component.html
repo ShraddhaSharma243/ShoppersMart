@@ -1,0 +1,26 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="inventory-form">
+    <h2>Inventory form</h2>
+    <div class="form-group">
+        <label for="name">Product Name</label>
+        <input id="name" type="text" formControlName="name" />
+
+        <label for="category">Category</label>
+        <select id="category" formControlName="category">
+            <option *ngFor="let category of categories" [value]="category.name">{{category.name}}</option>
+        </select>
+
+        <label for="isImported">Imported</label>
+        <input id="isImported" type="checkbox" formControlName="isImported" />
+
+        <label for="price">Price</label>
+        <input id="price" type="number" formControlName="price" />
+
+        <label for="quantity">Quantity</label>
+        <input id="quantity" type="number" formControlName="quantity" min="1" />
+    </div>
+
+    <button type="submit" class="submit-button">Submit</button>
+    
+    <p *ngIf="submitResponseSuccessMessage" class="success-message">{{this.submitResponseSuccessMessage}}</p>
+    <p *ngIf="submitResponseErrorMessage" class="error-message">{{this.submitResponseErrorMessage}}</p>
+</form>
