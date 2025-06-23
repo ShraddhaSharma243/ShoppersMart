@@ -1,10 +1,8 @@
 ﻿namespace ShopperMartBackend.Entities
 {
-    public enum ProductCategory
+    public class ProductCategory
     {
-        Entertainment,
-        Food,
-        Misc,
-        Stationary
+        public Guid Id { get; set; }
+        public string Name { get; set; }
     }
 }

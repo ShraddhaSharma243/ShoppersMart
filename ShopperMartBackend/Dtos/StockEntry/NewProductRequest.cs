@@ -2,7 +2,7 @@
 
 namespace ShopperMartBackend.Dtos.StockEntry
 {
-    public class StockEntryRequest
+    public class NewProductRequest
     {
         public required string Name { get; set; }
         public required string Category { get; set; }

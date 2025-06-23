@@ -15,13 +15,8 @@ export class StockEntryFormComponent {
   private formBuilder = inject(FormBuilder);
   private stockService = inject(StockService);
   submitResponseSuccessMessage = "";
-  submitResponseErrorMessage = "";
-  readonly categories = [
-    { id: 1, name: 'Food' },
-    { id: 2, name: 'Enytertainment' },
-    { id: 3, name: 'Misc' },
-    { id: 4, name: 'Clothing' },
-  ];
+  errors: string[] = [];
+  readonly categories = this.stockService.getCategories();
   form = this.formBuilder.group({
     name: ['', {
       validators: [
@@ -32,7 +27,9 @@ export class StockEntryFormComponent {
       ]
     }
     ],
-    category: [this.categories[0].id],
+    category: [this.categories, {
+      validators: [Validators.required]
+    }],
     isImported: [false],
     price: [0, {
       validators: [Validators.required,
@@ -47,56 +44,77 @@ export class StockEntryFormComponent {
     }]
   });
 
-  onSubmit() {
-    if (this.form.invalid) {
-      this.submitResponseErrorMessage = "Please correct the errors in the form before submitting.";
-      if (this.nameIsInvaild) {
-        this.submitResponseErrorMessage += "</br> Name is invalid.";
-      }
-      if (this.priceIsInvalid) {
-        this.submitResponseErrorMessage += "\n Price is invalid.";
-      }
-      if (this.quantityIsInvalid) {
-        this.submitResponseErrorMessage += "\n Quantity is invalid.";
-      }
-      return;
-    }
-    const stockItemRequest = mapTostockItemRequestDto(this.form);
-    this.stockService.submit(stockItemRequest).subscribe({
-      next: () => {
-        this.submitResponseSuccessMessage = "Product submitted successfully";
-        this.form.reset();
-      },
-      error: (error) => {
-        this.submitResponseErrorMessage = "Error submitting product: " + error.message;
+  ngOnInit() {
+    this.categories.subscribe(categories => {
+      if (categories.length > 0) {
+        this.form.get('category')?.setValue(categories[0].name);
       }
     });
   }
 
+  onSubmit() {
+    this.submitResponseSuccessMessage = "";
+    if (this.isFormValid()) {
+      const stockItemRequest = mapTostockItemRequestDto(this.form);
+      this.stockService.submit(stockItemRequest).subscribe({
+        next: () => {
+          this.submitResponseSuccessMessage = "Product submitted successfully";
+          this.form.reset();
+        },
+        error: (error) => {
+          this.errors.push("Error submitting product: " + error.message);
+        }
+      });
+    }
+  }
+
+  private isFormValid() {
+    this.errors =[];
+    if (this.form.invalid) {
+      this.errors.push("Please correct the errors in the form before submitting.");
+      if (this.nameIsInvaild) {
+        this.errors.push("Name is invalid.");
+      }
+      if (this.CategoryIsInvalid) {
+        this.errors.push("Category is required.");
+      }
+      if (this.priceIsInvalid) {
+        this.errors.push("Price is invalid.");
+      }
+      if (this.quantityIsInvalid) {
+        this.errors.push("Quantity is invalid.");
+      }
+    }
+    return this.errors.length === 0;
+  }
+
   get nameIsInvaild() {
     return (
-      (this.form.controls.name.errors?.['required'] ||
-        this.form.controls.name.errors?.['minlength'] ||
-        this.form.controls.name.errors?.['maxlength'] ||
-        this.form.controls.name.errors?.['pattern']) &&
-      this.form.controls.name.touched
+      this.form.controls.name.errors?.['required'] ||
+      this.form.controls.name.errors?.['minlength'] ||
+      this.form.controls.name.errors?.['maxlength'] ||
+      this.form.controls.name.errors?.['pattern']
     );
+  }
+  get CategoryIsInvalid() {
+    return (
+      this.form.controls.category.invalid ||
+      this.form.controls.category.errors?.['required']
+    )
   }
   get priceIsInvalid() {
     return (
-      (this.form.controls.price.invalid ||
-        this.form.controls.price.errors?.['required'] ||
-        this.form.controls.price.errors?.['min'] ||
-        this.form.controls.price.errors?.['pattern']) &&
-      this.form.controls.price.touched
+      this.form.controls.price.invalid ||
+      this.form.controls.price.errors?.['required'] ||
+      this.form.controls.price.errors?.['min'] ||
+      this.form.controls.price.errors?.['pattern']
     );
   }
   get quantityIsInvalid() {
     return (
-      (this.form.controls.quantity.invalid ||
-        this.form.controls.quantity.errors?.['required'] ||
-        this.form.controls.quantity.errors?.['min']) &&
-      this.form.controls.quantity.touched
+      this.form.controls.quantity.invalid ||
+      this.form.controls.quantity.errors?.['required'] ||
+      this.form.controls.quantity.errors?.['min']
     );
   }
 }

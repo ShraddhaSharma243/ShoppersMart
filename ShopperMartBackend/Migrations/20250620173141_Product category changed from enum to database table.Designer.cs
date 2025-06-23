@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShopperMartBackend.DatabaseContext;
 
@@ -11,9 +12,11 @@ using ShopperMartBackend.DatabaseContext;
 namespace ShopperMartBackend.Migrations
 {
     [DbContext(typeof(ShopperMartDBContext))]
-    partial class ShopperMartDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250620173141_Product category changed from enum to database table")]
+    partial class Productcategorychangedfromenumtodatabasetable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

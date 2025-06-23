@@ -25,7 +25,8 @@ internal class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddSingleton<ITaxService, TaxService>();
         builder.Services.AddScoped<IOrderService, OrderService>();     
-        builder.Services.AddScoped<IStockEntryService, StockEntryService>();
+        builder.Services.AddScoped<ICategoryService, CategoryService>();
+        builder.Services.AddScoped<IProductService, ProductService>();
 
         var app = builder.Build();
         using (var scope = app.Services.CreateScope())

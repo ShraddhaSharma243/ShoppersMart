@@ -2,6 +2,11 @@
 using Microsoft.EntityFrameworkCore;
 using ShopperMartBackend.DatabaseContext;
 using ShopperMartBackend.Dtos.Product;
+using ShopperMartBackend.Dtos.StockEntry;
+using ShopperMartBackend.Exceptions;
+using ShopperMartBackend.Services;
+
+using ProductAlreadyExistException = ShopperMartBackend.Exceptions.ProductAlreadyExistException;
 
 namespace ShopperMartBackend.Controllers
 {
@@ -10,9 +15,11 @@ namespace ShopperMartBackend.Controllers
     public class ProductController : Controller
     {
         private readonly ShopperMartDBContext _dbContext;
-        public ProductController(ShopperMartDBContext dbContext)
+        private readonly IProductService _productService;
+        public ProductController(ShopperMartDBContext dbContext, IProductService productService)
         {
             _dbContext = dbContext;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -24,7 +31,7 @@ namespace ShopperMartBackend.Controllers
                 {
                     Id = product.Id,
                     Name = product.Name,
-                    Category = product.Category.ToString(),
+                    Category = product.Category,
                     IsImported = product.IsImported,
                     Price = product.Price,
                     QuantityInStock = product.QuantityInStock
@@ -32,5 +39,29 @@ namespace ShopperMartBackend.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("AddProduct")]
+        public async Task<IActionResult> AddProductToStock([FromBody] NewProductRequest newProductRequest)
+        {
+            try
+            {
+                await _productService.AddProduct(newProductRequest);
+                return NoContent();
+
+            }
+            catch (InvalidProductCategoryException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (ProductAlreadyExistException ex)
+            { 
+                return BadRequest(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }

@@ -17,7 +17,7 @@ namespace ShopperMartBackend.Data
                 {
                     Id =  Guid.NewGuid(),
                     Name =  "Music CD",
-                    Category = ProductCategory.Entertainment,
+                    Category = "Entertainment",
                     IsImported  = false,
                     Price = 14.99m,
                     QuantityInStock = 10,
@@ -26,7 +26,7 @@ namespace ShopperMartBackend.Data
                 {
                     Id =  Guid.NewGuid(),
                     Name =  "Chocolate Bar",
-                    Category = ProductCategory.Food,
+                    Category = "Food",
                     IsImported  = false,
                     Price = 0.85m,
                     QuantityInStock = 10,
@@ -35,7 +35,7 @@ namespace ShopperMartBackend.Data
                 {
                     Id =  Guid.NewGuid(),
                     Name =  "Chocolate",
-                    Category = ProductCategory.Food,
+                    Category = "Food",
                     IsImported  = true,
                     Price = 10.00m,
                     QuantityInStock = 10,
@@ -44,7 +44,7 @@ namespace ShopperMartBackend.Data
                 {
                     Id =  Guid.NewGuid(),
                     Name =  "Perfume",
-                    Category = ProductCategory.Misc,
+                    Category = "Misc",
                     IsImported  = true,
                     Price = 47.50m,
                     QuantityInStock = 10,
