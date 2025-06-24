@@ -1,4 +1,4 @@
-export interface StockRequestDto{
+export interface NewProductRequestDto{
     name: string;
     category: string;
     isImported: boolean,

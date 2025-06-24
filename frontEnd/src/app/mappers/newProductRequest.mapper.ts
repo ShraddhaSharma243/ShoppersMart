@@ -1,7 +1,7 @@
 import { FormGroup } from "@angular/forms";
-import { StockRequestDto } from "../dtos/stockRequest.dto";
+import { NewProductRequestDto } from "../dtos/newProductRequest.dto";
 
-export function mapTostockItemRequestDto(entryForm: FormGroup<any>): StockRequestDto {
+export function mapToNewProductRequestDto(entryForm: FormGroup<any>): NewProductRequestDto {
     return {
         name: entryForm.get('name') ?.value ?? '',
         category: String(entryForm.get('category')?.value),

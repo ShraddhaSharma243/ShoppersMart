@@ -1,16 +1,38 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
+import { NewProductRequestDto } from '../dtos/newProductRequest.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
+
   private apiUrl = 'https://localhost:7049/api/Product';
 
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<any> {
     return this.http.get(this.apiUrl);
+  }
+
+  submit(newProductRequest: NewProductRequestDto) {
+  const apiUrl = "https://localhost:7049/api/Product/AddProduct";
+    
+    const body = {
+      name: newProductRequest.name,
+      category: newProductRequest.category,
+      isImported: newProductRequest.isImported,
+      price: newProductRequest.price,
+      quantityInStock: newProductRequest.quantityInStock
+    }
+
+    return this.http.post(apiUrl, body).pipe(
+      map(() => { }),
+      catchError((error: HttpErrorResponse) => {
+        console.log('Ein service - error submitting entry : ', error.error.message);
+        return throwError(() => error.error?.message || 'An unknown error ocured while submitting the product');
+      })
+    );
   }
 }

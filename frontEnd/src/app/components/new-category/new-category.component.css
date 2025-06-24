@@ -1,11 +1,11 @@
-.inventory-form {
+.new-category-entry-form {
     max-width: 600px;
     margin: 20px auto;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.inventory-form h2 {
+.new-category-entry-form h2 {
     color: #333;
     margin-bottom: 30px;
     text-align: center;

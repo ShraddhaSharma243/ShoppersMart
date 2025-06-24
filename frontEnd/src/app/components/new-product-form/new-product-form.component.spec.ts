@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { StockEntryFormComponent } from './stock-entry-form.component';
+import { NewProductEntryFormComponent } from './new-product-form.component';
 
 describe('InventoryFormComponent', () => {
-  let component: StockEntryFormComponent;
-  let fixture: ComponentFixture<StockEntryFormComponent>;
+  let component: NewProductEntryFormComponent;
+  let fixture: ComponentFixture<NewProductEntryFormComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StockEntryFormComponent]
+      imports: [NewProductEntryFormComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(StockEntryFormComponent);
+    fixture = TestBed.createComponent(NewProductEntryFormComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

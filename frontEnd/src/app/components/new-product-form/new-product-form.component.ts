@@ -1,22 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { StockService } from '../../services/stock.service';
-import { mapTostockItemRequestDto } from '../../mappers/stockItemRequest.mapper';
+import { mapToNewProductRequestDto } from '../../mappers/newProductRequest.mapper';
+import { ProductService } from '../../services/product.service';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
-  selector: 'app-inventory-form',
+  selector: 'new-product-form',
   imports: [ReactiveFormsModule, CommonModule],
-  templateUrl: './stock-entry-form.component.html',
-  styleUrl: './stock-entry-form.component.css'
+  templateUrl: './new-product-form.component.html',
+  styleUrl: './new-product-form.component.css'
 })
 
-export class StockEntryFormComponent {
+export class NewProductEntryFormComponent {
   private formBuilder = inject(FormBuilder);
-  private stockService = inject(StockService);
+  private categoryService = inject(CategoryService);
+  private productService = inject(ProductService);
   submitResponseSuccessMessage = "";
   errors: string[] = [];
-  readonly categories = this.stockService.getCategories();
+  readonly categories = this.categoryService.getCategories();
   form = this.formBuilder.group({
     name: ['', {
       validators: [
@@ -55,13 +57,14 @@ export class StockEntryFormComponent {
   onSubmit() {
     this.submitResponseSuccessMessage = "";
     if (this.isFormValid()) {
-      const stockItemRequest = mapTostockItemRequestDto(this.form);
-      this.stockService.submit(stockItemRequest).subscribe({
+      const newProductRequest = mapToNewProductRequestDto(this.form);
+      this.productService.submit(newProductRequest).subscribe({
         next: () => {
           this.submitResponseSuccessMessage = "Product submitted successfully";
           this.form.reset();
         },
         error: (error) => {
+          console.log("Error submitting product: ", error.message);
           this.errors.push("Error submitting product: " + error.message);
         }
       });
