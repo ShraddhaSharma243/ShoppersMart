@@ -1,8 +1,8 @@
 ﻿using ShopperMartBackend.Entities;
 
-namespace ShopperMartBackend.Dtos.StockEntry
+namespace ShopperMartBackend.Dtos.Product
 {
-    public class NewProductRequest
+    public class ProductRequest
     {
         public required string Name { get; set; }
         public required string Category { get; set; }

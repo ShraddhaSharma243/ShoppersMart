@@ -1,27 +1,31 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using ShopperMartBackend.DatabaseContext;
-using ShopperMartBackend.Dtos.StockEntry;
+using ShopperMartBackend.Dtos.Product;
 using ShopperMartBackend.Entities;
 using ShopperMartBackend.Exceptions;
 using System.Text.RegularExpressions;
 
 namespace ShopperMartBackend.Services
 {
-    public class ProductService : IProductService
+    public class ProductService(ShopperMartDBContext _dBContext) : IProductService
     {
-        private readonly ShopperMartDBContext _dbContext;
-        public ProductService(ShopperMartDBContext dBContext)
-        {
-            _dbContext = dBContext;
-        }
-        public async Task AddProduct(NewProductRequest request)
+        public async Task AddProduct(ProductRequest request)
         {
             this.ValidateName(request);
             this.ValidateCategories(request);
             this.ValidatePrice(request);
             this.ValidateQuantity(request);
 
-            var newProduct = new Product()
+            var newProduct = CreateProduct(request);
+            _dBContext.Products.Add(newProduct);
+            
+            await _dBContext.SaveChangesAsync();
+        }
+
+        private static Product CreateProduct(ProductRequest request)
+        {
+            return new()
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name,
@@ -30,11 +34,26 @@ namespace ShopperMartBackend.Services
                 Price = request.Price,
                 QuantityInStock = request.QuantityInStock
             };
-            _dbContext.Products.Add(newProduct);
-            await _dbContext.SaveChangesAsync();
         }
 
-        private void ValidateQuantity(NewProductRequest request)
+        public async Task<ProductsResponse> GetProducts()
+        {
+            var response = new ProductsResponse();
+            response.Products.AddRange(
+                await _dBContext.Products.Select(product => new ProductResponse()
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Category = product.Category,
+                    IsImported = product.IsImported,
+                    Price = product.Price,
+                    QuantityInStock = product.QuantityInStock
+                }).ToListAsync());
+
+            return response;
+        }
+
+        private void ValidateQuantity(ProductRequest request)
         {
             if (request.QuantityInStock < 1)
             {
@@ -42,7 +61,7 @@ namespace ShopperMartBackend.Services
             }
         }
 
-        private void ValidatePrice(NewProductRequest request)
+        private void ValidatePrice(ProductRequest request)
         {
             var minPrice = 0.01m;
             if (request.Price.CompareTo(minPrice) < 0)
@@ -51,26 +70,26 @@ namespace ShopperMartBackend.Services
             }
         }
 
-        private void ValidateCategories(NewProductRequest request)
+        private void ValidateCategories(ProductRequest request)
         {
             if(request.Category == "")
             {
                 throw new CategoryRequiredException("Category name is required.");
             }
-            if (!_dbContext.Categories.Any(c => (c.Name == request.Category)))
+            if (_dBContext.Categories.Any(c => (c.Name == request.Category)))
             {
                 throw new InvalidProductCategoryException($"Category {request.Category} does not exist.");
             }
         }
 
-        private void ValidateName(NewProductRequest request)
+        private void ValidateName(ProductRequest request)
         {
            var name = request.Name;
             if (name == "")
             {
                 throw new NameRequiredException("Name is required.");
             }
-            if (_dbContext.Products.Any(p => ((p.Name == name) && p.Category == request.Category)))
+            if (_dBContext.Products.Any(p => ((p.Name == name) && p.Category == request.Category)))
             {
                 throw new ProductAlreadyExistException($"Product {name} in Category {request.Category} already exists. ");
             }

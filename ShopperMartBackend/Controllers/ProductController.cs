@@ -2,11 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using ShopperMartBackend.DatabaseContext;
 using ShopperMartBackend.Dtos.Product;
-using ShopperMartBackend.Dtos.StockEntry;
 using ShopperMartBackend.Exceptions;
 using ShopperMartBackend.Services;
-
-using ProductAlreadyExistException = ShopperMartBackend.Exceptions.ProductAlreadyExistException;
 
 namespace ShopperMartBackend.Controllers
 {
@@ -14,34 +11,21 @@ namespace ShopperMartBackend.Controllers
     [Route("api/[controller]")]
     public class ProductController : Controller
     {
-        private readonly ShopperMartDBContext _dbContext;
         private readonly IProductService _productService;
-        public ProductController(ShopperMartDBContext dbContext, IProductService productService)
+        public ProductController(IProductService productService)
         {
-            _dbContext = dbContext;
             _productService = productService;
         }
 
         [HttpGet]
         public async Task<ActionResult<ProductsResponse>> GetProducts()
         {
-            var response = new ProductsResponse();
-            response.Products.AddRange(
-                await _dbContext.Products.Select(product => new ProductResponse()
-                {
-                    Id = product.Id,
-                    Name = product.Name,
-                    Category = product.Category,
-                    IsImported = product.IsImported,
-                    Price = product.Price,
-                    QuantityInStock = product.QuantityInStock
-                }).ToListAsync());
-
+            ProductsResponse response = await _productService.GetProducts();
             return Ok(response);
         }
 
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProductToStock([FromBody] NewProductRequest newProductRequest)
+        public async Task<IActionResult> AddProduct([FromBody] ProductRequest newProductRequest)
         {
             try
             {

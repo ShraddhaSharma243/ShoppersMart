@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ShopperMartBackend.Dtos;
 using ShopperMartBackend.Entities;
 
 namespace ShopperMartBackend.DatabaseContext
