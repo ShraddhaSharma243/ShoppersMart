@@ -29,9 +29,8 @@ export class ProductService {
 
     return this.http.post(apiUrl, body).pipe(
       map(() => { }),
-      catchError((error: HttpErrorResponse) => {
-        console.log('Ein service - error submitting entry : ', error.error.message);
-        return throwError(() => error.error?.message || 'An unknown error ocured while submitting the product');
+      catchError((httpErrorResponse: HttpErrorResponse) => {
+        return throwError(() => httpErrorResponse.error || 'An unknown error ocured while submitting the product');
       })
     );
   }

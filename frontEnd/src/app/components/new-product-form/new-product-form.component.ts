@@ -58,14 +58,14 @@ export class NewProductEntryFormComponent {
     this.submitResponseSuccessMessage = "";
     if (this.isFormValid()) {
       const newProductRequest = mapToNewProductRequestDto(this.form);
-      this.productService.submit(newProductRequest).subscribe({
+     this.productService.submit(newProductRequest).subscribe({
         next: () => {
           this.submitResponseSuccessMessage = "Product submitted successfully";
           this.form.reset();
         },
         error: (error) => {
           console.log("Error submitting product: ", error.message);
-          this.errors.push("Error submitting product: " + error.message);
+          this.errors.push("Error submitting product: " + error);
         }
       });
     }

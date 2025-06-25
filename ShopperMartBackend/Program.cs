@@ -1,7 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using ShopperMartBackend.Data;
 using ShopperMartBackend.DatabaseContext;
 using ShopperMartBackend.Services;
 
@@ -33,11 +32,7 @@ internal class Program
         {
             var services = scope.ServiceProvider;
             var context = services.GetRequiredService<ShopperMartDBContext>();
-            DataSeeder.SeedData(context);
-
-            var allproducts = context.Products.ToList();
         }
-
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
