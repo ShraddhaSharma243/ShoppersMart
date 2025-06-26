@@ -13,9 +13,15 @@ export class ProductService {
   constructor(private http: HttpClient) { }
 
   getProducts(): Observable<any> {
-    return this.http.get(this.apiUrl);
+      return this.http.get(this.apiUrl).pipe(
+        map((response: any) => response.products || []),
+        catchError((error: HttpErrorResponse) => {
+          console.error('Error fetching products:', error);
+          return throwError(() => 'Failed to fetch products. Please try again later.');
+        })
+      );
   }
-
+  
   submit(newProductRequest: NewProductRequestDto) {
   const apiUrl = "https://localhost:7049/api/Product/AddProduct";
     

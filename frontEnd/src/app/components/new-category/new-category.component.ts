@@ -31,7 +31,7 @@ export class NewCategoryComponent {
         this.newCategoryForm.reset();
       },
       error: (error) => {
-        this.errors.push(error.message);
+        this.errors.push(error);
       }
     });
   }

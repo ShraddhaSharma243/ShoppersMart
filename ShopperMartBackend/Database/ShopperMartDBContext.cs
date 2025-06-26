@@ -13,7 +13,7 @@ namespace ShopperMartBackend.DatabaseContext
         public DbSet<Order> Orders { get; set; }
         public DbSet<OrderItem> Items { get; set; }
         public DbSet<ProductCategory> Categories { get; set; }
-
+      
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Product>().HasKey(e => e.Id);

@@ -64,7 +64,6 @@ export class NewProductEntryFormComponent {
           this.form.reset();
         },
         error: (error) => {
-          console.log("Error submitting product: ", error.message);
           this.errors.push("Error submitting product: " + error);
         }
       });

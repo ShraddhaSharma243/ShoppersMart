@@ -24,7 +24,7 @@ export class ProductListComponent implements OnInit {
   public fetchProducts() {
     this.productService.getProducts().subscribe(
       (resp: any) => {
-        this.products = mapToProductDto(resp.products, this.cartService);
+        this.products = mapToProductDto(resp, this.cartService);
       },
       (error) => {
         console.error('Error fetching products', error);

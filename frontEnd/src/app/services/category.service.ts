@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { NewCategoryRequestDto } from "../dtos/newCategoryRequest.dto";
 import { catchError, map, Observable, throwError } from "rxjs";
 import { Injectable } from "@angular/core";
@@ -32,10 +32,9 @@ export class CategoryService {
         }
         return this.http.post(apiUrl, body).pipe(
             map(() => { }),
-            catchError(error => {
-                console.error('Error submitting category: ', error);
-                return throwError(() => error);
-            })
+            catchError((httpErrorResponse: HttpErrorResponse) => {
+                    return throwError(() => httpErrorResponse.error || 'An unknown error ocured while submitting the product');
+                  })
         );
     }
 }

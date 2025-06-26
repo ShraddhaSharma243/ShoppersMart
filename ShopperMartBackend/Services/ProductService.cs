@@ -76,7 +76,7 @@ namespace ShopperMartBackend.Services
             {
                 throw new CategoryRequiredException("Category name is required.");
             }
-            if (_dBContext.Categories.Any(c => (c.Name == request.Category)))
+            if (!_dBContext.Categories.Any(c => (c.Name == request.Category)))
             {
                 throw new InvalidProductCategoryException($"Category {request.Category} does not exist.");
             }
