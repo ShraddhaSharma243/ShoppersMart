@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { FormsModule } from '@angular/forms';
@@ -23,13 +23,16 @@ export class ProductListComponent implements OnInit {
 
   public fetchProducts() {
     this.productService.getProducts().subscribe(
-      (resp: any) => {
+      {
+        next: (resp: any) => {
+          try{
         this.products = mapToProductDto(resp, this.cartService);
-      },
-      (error) => {
-        console.error('Error fetching products', error);
+        } catch (error) {
+          console.error("Error mapping products", error);
       }
-    )
+    },
+      error: (err: unknown) => console.error("Error fetching products", err),      
+  });
   }
 
   addToCart(product: ProductDto) {

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { TopMenuComponent } from './menu/top-menu/top-menu.component';
 
 @Component({

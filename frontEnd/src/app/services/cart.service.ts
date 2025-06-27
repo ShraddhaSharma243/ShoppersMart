@@ -25,26 +25,35 @@ export class CartService {
         }
       }
     } catch (error) {
-      console.error("Error fetching local storage");
-      throw new Error("Error fetching local storage");
+      throw new Error(`Error fetching local storage: ${error instanceof Error ? error.message : error}`);
     }
     return cartItems;
+  }
+
+  private roundToTwo(num: number): number {
+    return Math.round(num * 100) / 100;
   }
 
   updateCart(cartItem: ProductDto) {
     const productId = cartItem.id;
     const existingItem = localStorage.getItem(productId);
     if (existingItem) {
-      cartItem.subTotal = Math.round(cartItem.quantityOrdered * cartItem.price * 100) / 100;
+      const quantity = Number(cartItem.quantityOrdered);
+      const price = Number(cartItem.price);
+      if (isNaN(quantity) || isNaN(price)) {
+        cartItem.subTotal = 0;
+      } else {
+        cartItem.subTotal = this.roundToTwo(quantity * price);
+      }
       localStorage.setItem(productId, JSON.stringify(cartItem));
     }
   }
-
+    
   removeItemFromCart(cartItem: ProductDto) {
     localStorage.removeItem(cartItem.id);
   }
 
   getTotal(): number {
-    return Math.round(this.getCartItems().reduce((total, item) => total + item.subTotal, 0) *100)/100;
+    return this.roundToTwo(this.getCartItems().reduce((total, item) => total + item.subTotal, 0));
   }
 }

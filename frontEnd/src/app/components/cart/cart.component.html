@@ -17,16 +17,15 @@
             <td>{{ cartItem.isImported }} </td>
             <td>{{ cartItem.price }}</td>
             <td>
-                <select [(ngModel)]="cartItem.quantityOrdered" (ngModelChange)="onQuantityOrderedChange(cartItem)">
+                <select [(ngModel)]="cartItem.quantityOrdered" (ngModelChange)="onQuantityChange(cartItem)">
                     <option *ngFor="let qty of [].constructor(cartItem.quantityInStock) let i = index" [value]="i + 1">
                         {{ i + 1 }}
                     </option>
                 </select>
-
             </td>
             <td>{{ cartItem.subTotal}}</td>
             <td>
-                <button (click)="removeItemFromCart(cartItem)">Remove</button>
+                <button (click)="removeItem(cartItem)">Remove</button>
             </td>
         </tr>
     </tbody>
@@ -35,5 +34,5 @@
     Total : {{total}}
 </div>
 <div>
-    <button (click)="submitOrder()" [disabled]="isCartEmpty">Submit</button>
+    <button (click)="onSubmitOrder()" [disabled]="isCartEmpty">Submit</button>
 </div>
