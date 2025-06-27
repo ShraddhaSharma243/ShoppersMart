@@ -5,7 +5,7 @@ export function mapToReceiptDto(orderResponse: any): ReceiptDto {
         id: orderResponse.id,
         orderDate: orderResponse.orderDate,
         total: orderResponse.total,
-        orderItems: orderResponse.orderItems.map((orderItem: { name: string; category: string; isImported: boolean; price: number; quantity: number; tax: number; subTotal: number; }) => ({
+        purchasedItems: orderResponse.orderItems.map((orderItem: { name: string; category: string; isImported: boolean; price: number; quantity: number; tax: number; subTotal: number; }) => ({
             name: orderItem.name,
             category: orderItem.category,
             isImported: orderItem.isImported,

@@ -18,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let orderItem of receiptData.orderItems">
+            <tr *ngFor="let orderItem of receiptData.purchasedItems">
                 <td>{{ orderItem.name }}</td>
                 <td>{{ orderItem.category }}</td>
                 <td>{{ orderItem.isImported }} </td>

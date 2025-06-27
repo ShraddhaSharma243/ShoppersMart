@@ -1,7 +1,7 @@
-import { OrderItem } from "./orderItem.dto"
+import { PurchasedItem } from "./orderItem.dto"
 export interface ReceiptDto{
     id : string,
     orderDate: Date,
     total: number,
-    orderItems : OrderItem[]
+    purchasedItems : PurchasedItem[]
 }
