@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ReceiptDto } from '../../dtos/receipt.dto';
-import { mapToReceiptDto } from '../../mappers/orderResponse.mapper';
+import { mapToReceiptDto } from '../../mappers/ReceiptResponse.mapper';
 import { CommonModule } from '@angular/common';
 
 @Component({

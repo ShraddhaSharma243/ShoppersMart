@@ -4,6 +4,6 @@ import { OrderRequestDto } from "../dtos/orderRequest.dto";
 export function mapToOrderRequestDto(productDto : ProductDto): OrderRequestDto{
  return {
     productId: productDto.id, 
-    quantity:productDto.quantityOrdered,
+    quantity: productDto.quantityOrdered,
  }
 }  

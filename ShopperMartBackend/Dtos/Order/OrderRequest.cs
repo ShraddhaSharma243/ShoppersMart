@@ -2,6 +2,6 @@
 {
     public class OrderRequest
     {
-        public List<OrderItemRequest> OrderItemRequests { get; set; } = [];
+        public List<OrderItem> Items { get; set; } = [];
     }
 }

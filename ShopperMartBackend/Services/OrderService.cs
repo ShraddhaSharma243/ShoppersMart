@@ -33,19 +33,19 @@ namespace ShopperMartBackend.Services
 
         private async Task UpdateStock(OrderRequest request)
         {
-            var orderItemRequests = request.OrderItemRequests;
-            if (orderItemRequests == null)
+            var orderItemsRequest = request.Items;
+            if (orderItemsRequest == null)
             {
-                throw new ArgumentNullException(nameof(orderItemRequests));
+                throw new ArgumentNullException(nameof(orderItemsRequest));
             }
-           foreach(var orderItemRequest in orderItemRequests)
+           foreach(var orderItemRequest in orderItemsRequest)
             {
                 UpdateProductStockQuantity(orderItemRequest);
             }
             await _dbContext.SaveChangesAsync();
         }
 
-        private void UpdateProductStockQuantity(OrderItemRequest orderItemRequest)
+        private void UpdateProductStockQuantity(Dtos.Order.OrderItem orderItemRequest)
         {
             var productId = orderItemRequest.ProductId;
             var product = _dbContext.Products.Find(productId);
@@ -65,11 +65,11 @@ namespace ShopperMartBackend.Services
             {
                 Id = Guid.NewGuid(),
                 OrderDate = DateTime.UtcNow,
-                Items = new List<OrderItem>(),
+                Items = new List<Entities.OrderItem>(),
                 Total = 0
             };
 
-            foreach (var orderItem in request.OrderItemRequests)
+            foreach (var orderItem in request.Items)
             {
                 var product = orderedProducts[orderItem.ProductId];
                 var tax = _taxService.CalculateTax(product, orderItem.Quantity);
@@ -83,7 +83,7 @@ namespace ShopperMartBackend.Services
 
         private static void ValidateProductStock(OrderRequest request, Dictionary<Guid, Product> products)
         {
-            foreach (var orderItem in request.OrderItemRequests)
+            foreach (var orderItem in request.Items)
             {
                 if (!products.TryGetValue(orderItem.ProductId, out var product))
                 {
@@ -99,7 +99,7 @@ namespace ShopperMartBackend.Services
 
         private async Task<Dictionary<Guid, Product>> LoadOrderedProdutsAsync(OrderRequest request)
         {
-            var orderedProductsIds = request.OrderItemRequests.Select(orderItem => orderItem.ProductId).Distinct().ToList();
+            var orderedProductsIds = request.Items.Select(orderItem => orderItem.ProductId).Distinct().ToList();
             var orderedProducts = await _dbContext.Products
                         .Where(p => orderedProductsIds.Contains(p.Id))
                         .ToDictionaryAsync(p => p.Id);
@@ -108,15 +108,15 @@ namespace ShopperMartBackend.Services
 
         private static void ValidateOrderRequest(OrderRequest request)
         {
-            if (request.OrderItemRequests == null || request.OrderItemRequests.Count == 0)
+            if (request.Items == null || request.Items.Count == 0)
             {
                 throw new InvalidOrderException("Product requests list cannot be empty");
             }
         }
 
-        private static OrderItem CreateOrderItem(Product product, int quantity, decimal tax, Order order)
+        private static Entities.OrderItem CreateOrderItem(Product product, int quantity, decimal tax, Order order)
         {
-            return new OrderItem
+            return new Entities.OrderItem
             {
                 Id = new Guid(),
                 Quantity = quantity,
@@ -143,7 +143,7 @@ namespace ShopperMartBackend.Services
             return response;
         }
 
-        private OrderItemResponse CreateOrderItemResponse(OrderItem orderItem)
+        private OrderItemResponse CreateOrderItemResponse(Entities.OrderItem orderItem)
         {
             var quantity = orderItem.Quantity;
             var tax = orderItem.Tax;
