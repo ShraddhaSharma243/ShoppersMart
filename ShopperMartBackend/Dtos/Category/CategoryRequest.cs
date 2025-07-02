@@ -2,6 +2,6 @@
 {
     public class CategoryRequest
     {
-       public string Name { get; set; }
+       public required string Name { get; set; }
     }
 }

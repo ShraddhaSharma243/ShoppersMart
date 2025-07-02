@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace ShopperMartBackend.Services
 {
-    public class ProductService(ShopperMartDBContext _dBContext) : IProductService
+    public class ProductService(DBContext _dBContext) : IProductService
     {
         public async Task AddProduct(ProductRequest request)
         {

@@ -5,29 +5,23 @@ using ShopperMartBackend.Exceptions;
 
 namespace ShopperMartBackend.Services
 {
-    public class CategoryService : ICategoryService
+    public class CategoryService(DBContext _dBContext) : ICategoryService
     {
-        private readonly ShopperMartDBContext _dbContext;
-        public CategoryService(ShopperMartDBContext dBContext)
+        public async Task AddCategory(CategoryRequest request)
         {
-            _dbContext = dBContext;
-        }
-
-        public async Task AddCategory(CategoryRequest category)
-        {
-            var categoryAlreadyExist = _dbContext.Categories.Any(c=> (c.Name == category.Name));
+            var categoryAlreadyExist = _dBContext.Categories.Any(c=> (c.Name == request.Name));
             if (categoryAlreadyExist)
             {
-                throw new DuplicateCategoryException($"{category.Name} already exists.");
+                throw new DuplicateCategoryException($"{request.Name} already exists.");
             }
 
             var newCategory = new ProductCategory()
             {
                 Id = Guid.NewGuid(),
-                Name = category.Name
+                Name = request.Name
             };
-            _dbContext.Categories.Add(newCategory);
-          await _dbContext.SaveChangesAsync();   
+            _dBContext.Categories.Add(newCategory);
+          await _dBContext.SaveChangesAsync();   
         }
     }
 }

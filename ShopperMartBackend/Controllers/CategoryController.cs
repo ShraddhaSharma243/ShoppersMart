@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 
 using ShopperMartBackend.DatabaseContext;
-using ShopperMartBackend.Dtos.Product;
 using ShopperMartBackend.Dtos.StockEntry;
 using ShopperMartBackend.Entities;
 using ShopperMartBackend.Exceptions;
@@ -12,10 +11,10 @@ namespace ShopperMartBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController(ICategoryService categoryService, ShopperMartDBContext dbContext) : Controller
+    public class CategoryController(ICategoryService categoryService, DBContext dbContext) : Controller
     {
         private readonly ICategoryService _categoryService = categoryService;
-        private readonly ShopperMartDBContext _dBContext = dbContext;
+        private readonly DBContext _dBContext = dbContext;
 
 
 

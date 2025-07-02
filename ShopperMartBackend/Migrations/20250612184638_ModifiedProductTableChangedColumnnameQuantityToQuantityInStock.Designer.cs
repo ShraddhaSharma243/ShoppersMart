@@ -11,7 +11,7 @@ using ShopperMartBackend.DatabaseContext;
 
 namespace ShopperMartBackend.Migrations
 {
-    [DbContext(typeof(ShopperMartDBContext))]
+    [DbContext(typeof(DBContext))]
     [Migration("20250612184638_ModifiedProductTableChangedColumnnameQuantityToQuantityInStock")]
     partial class ModifiedProductTableChangedColumnnameQuantityToQuantityInStock
     {

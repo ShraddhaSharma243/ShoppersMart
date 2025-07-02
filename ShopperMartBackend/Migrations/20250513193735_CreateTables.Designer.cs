@@ -11,7 +11,7 @@ using ShopperMartBackend.DatabaseContext;
 
 namespace ShopperMartBackend.Migrations
 {
-    [DbContext(typeof(ShopperMartDBContext))]
+    [DbContext(typeof(DBContext))]
     [Migration("20250513193735_CreateTables")]
     partial class CreateTables
     {
