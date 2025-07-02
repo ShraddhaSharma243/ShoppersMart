@@ -8,9 +8,9 @@ using ShopperMartBackend.Exceptions;
 
 namespace ShopperMartBackend.Services
 {
-    public class OrderService(DBContext dbContext, ITaxService taxService) : IOrderService
+    public class OrderService(ShopperMartDBContext dbContext, ITaxService taxService) : IOrderService
     {
-        private readonly DBContext _dbContext = dbContext;
+        private readonly ShopperMartDBContext _dbContext = dbContext;
         private readonly ITaxService _taxService = taxService;
 
         public async Task<OrderResponse> ProcessOrderAsync(OrderRequest request)

@@ -10,7 +10,7 @@ using ShopperMartBackend.DatabaseContext;
 
 namespace ShopperMartBackend.Migrations
 {
-    [DbContext(typeof(DBContext))]
+    [DbContext(typeof(ShopperMartDBContext))]
     partial class ShopperMartDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

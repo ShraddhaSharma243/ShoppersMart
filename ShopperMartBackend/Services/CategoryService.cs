@@ -5,7 +5,7 @@ using ShopperMartBackend.Exceptions;
 
 namespace ShopperMartBackend.Services
 {
-    public class CategoryService(DBContext _dBContext) : ICategoryService
+    public class CategoryService(ShopperMartDBContext _dBContext) : ICategoryService
     {
         public async Task AddCategory(CategoryRequest request)
         {
@@ -15,7 +15,7 @@ namespace ShopperMartBackend.Services
                 throw new DuplicateCategoryException($"{request.Name} already exists.");
             }
 
-            var newCategory = new ProductCategory()
+            var newCategory = new Category()
             {
                 Id = Guid.NewGuid(),
                 Name = request.Name

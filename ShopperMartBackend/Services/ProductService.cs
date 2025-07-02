@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace ShopperMartBackend.Services
 {
-    public class ProductService(DBContext _dBContext) : IProductService
+    public partial class ProductService(ShopperMartDBContext _dBContext) : IProductService
     {
         public async Task AddProduct(ProductRequest request)
         {
@@ -96,11 +96,14 @@ namespace ShopperMartBackend.Services
             if(name.Length<3 || name.Length > 255) {
                 throw new InvalidNameException("Name length must be greater then 3 and less then 255");
             }
-            if(!Regex.IsMatch(name, @"^[a-zA-Z'-]+$"))
+            if(!RegexForValidName().IsMatch(name))
             {
                 throw new InvalidNameException("Name can only contain alphabets, - and ' sign"); 
             }
 
         }
+
+        [GeneratedRegex(@"^[a-zA-Z'-]+$")]
+        private static partial Regex RegexForValidName();
     }
 }

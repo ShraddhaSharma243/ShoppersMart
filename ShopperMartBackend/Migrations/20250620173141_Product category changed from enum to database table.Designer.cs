@@ -11,7 +11,7 @@ using ShopperMartBackend.DatabaseContext;
 
 namespace ShopperMartBackend.Migrations
 {
-    [DbContext(typeof(DBContext))]
+    [DbContext(typeof(ShopperMartDBContext))]
     [Migration("20250620173141_Product category changed from enum to database table")]
     partial class Productcategorychangedfromenumtodatabasetable
     {

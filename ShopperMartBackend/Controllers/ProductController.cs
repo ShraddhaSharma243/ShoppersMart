@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ShopperMartBackend.DatabaseContext;
 using ShopperMartBackend.Dtos.Product;
 using ShopperMartBackend.Exceptions;
 using ShopperMartBackend.Services;
@@ -9,14 +7,8 @@ namespace ShopperMartBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ProductController : Controller
+    public class ProductController(IProductService _productService) : Controller
     {
-        private readonly IProductService _productService;
-        public ProductController(IProductService productService)
-        {
-            _productService = productService;
-        }
-
         [HttpGet]
         public async Task<ActionResult<ProductsResponse>> GetProducts()
         {
@@ -25,11 +17,11 @@ namespace ShopperMartBackend.Controllers
         }
 
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct([FromBody] ProductRequest newProductRequest)
+        public async Task<IActionResult> AddProduct([FromBody] ProductRequest request)
         {
             try
             {
-                await _productService.AddProduct(newProductRequest);
+                await _productService.AddProduct(request);
                 return NoContent();
 
             }

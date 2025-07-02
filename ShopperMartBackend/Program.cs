@@ -13,7 +13,7 @@ internal class Program
         // Add services to the container.
 
         builder.Services.AddControllers();
-        builder.Services.AddDbContext<DBContext>(options =>
+        builder.Services.AddDbContext<ShopperMartDBContext>(options =>
         {
             options.UseSqlServer(builder.Configuration.GetConnectionString("SMConnection"));
         });
@@ -31,7 +31,7 @@ internal class Program
         using (var scope = app.Services.CreateScope())
         {
             var services = scope.ServiceProvider;
-            var context = services.GetRequiredService<DBContext>();
+            var context = services.GetRequiredService<ShopperMartDBContext>();
         }
 
         // Configure the HTTP request pipeline.

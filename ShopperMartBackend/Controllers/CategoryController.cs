@@ -11,10 +11,10 @@ namespace ShopperMartBackend.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CategoryController(ICategoryService categoryService, DBContext dbContext) : Controller
+    public class CategoryController(ICategoryService categoryService, ShopperMartDBContext dbContext) : Controller
     {
         private readonly ICategoryService _categoryService = categoryService;
-        private readonly DBContext _dBContext = dbContext;
+        private readonly ShopperMartDBContext _dBContext = dbContext;
 
 
 
@@ -34,7 +34,7 @@ namespace ShopperMartBackend.Controllers
         }
 
         [HttpGet("GetCategories")]
-        public async Task<ActionResult<ProductCategory>> GetCategories()
+        public async Task<ActionResult<Category>> GetCategories()
         {
             try
             {
