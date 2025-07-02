@@ -14,21 +14,23 @@ export class NewCategoryComponent {
   errors: string[] = [];
   private formBuilder = inject(FormBuilder);
   private categoryService = inject(CategoryService);
-  submitResponseSuccessMessage: string = "";
+  private ERROR_INVALID_NAME = "Name is required. Name must be between 3 and 255 characters and can only contain letters and spaces.";
+  private SUCCESS_MESSAGE_CATEGORY_SUCCESSFULLY_CREATED = "Category created successfully.";
+  successMessage: string = "";
 
   onSubmit() {
-    this.submitResponseSuccessMessage = "";
+    this.successMessage = "";
     this.errors = [];
-    if (this.isCategoryNameInValid) {
-      this.errors.push("Category name is invalid. It must be between 3 and 255 characters long, contain only letters and spaces, and cannot be empty.");
+    if (this.isNameInvalid) {
+      this.errors.push(this.ERROR_INVALID_NAME);
       return;
     }
     
-    const newCategoryRequest = mapToNewCategoryRequestDto(this.newCategoryForm);
-    this.categoryService.submitCategory(newCategoryRequest).subscribe({
+    const request = mapToNewCategoryRequestDto(this.form);
+    this.categoryService.submit(request).subscribe({
       next: () => {
-        this.submitResponseSuccessMessage = "Category created successfully.";
-        this.newCategoryForm.reset();
+        this.successMessage = this.SUCCESS_MESSAGE_CATEGORY_SUCCESSFULLY_CREATED;
+        this.form.reset();
       },
       error: (error) => {
         this.errors.push(error);
@@ -36,7 +38,7 @@ export class NewCategoryComponent {
     });
   }
 
-  newCategoryForm = this.formBuilder.group({
+  form = this.formBuilder.group({
     name: ['', {
       validators: [
         Validators.required,
@@ -47,8 +49,8 @@ export class NewCategoryComponent {
     }]
   });
 
-  get isCategoryNameInValid() {
-    const nameControl = this.newCategoryForm.get('name');
+  get isNameInvalid() {
+    const nameControl = this.form.get('name');
     return (
       !!nameControl && (
         nameControl.errors?.['required'] ||

@@ -12,11 +12,11 @@ import { CommonModule } from '@angular/common';
 })
 export class ReceiptComponent {
   data : any;
-  receiptData: ReceiptDto;
+  receiptData: ReceiptDto | null = null;
 
   constructor(private router: Router){
     const navigation = this.router.getCurrentNavigation();
     this.data = navigation?.extras.state?.['data']; 
-    this.receiptData = mapToReceiptDto(this.data);
+    this.receiptData = this.data ? mapToReceiptDto(this.data) : {} as ReceiptDto;
   }
 }
